@@ -16,26 +16,36 @@ load_processed_data <- function(
 
 format_debt <- function(x, decimals = 2) {
   formatted <- sapply(x, function(value) {
+    if (is.na(value)) {
+      return(NA_character_)
+    }
     if (abs(value) < 1e7) {
       formatted_value <- sprintf(paste0("%.", decimals, "f"), value / 1e6)
-      paste0(formatted_value, "M")
+      return(paste0(formatted_value, "M"))
     } else {
       formatted_value <- sprintf(paste0("%.", decimals, "f"), value / 1e9)
-      paste0(formatted_value, "B")
+      return(paste0(formatted_value, "B"))
     }
   })
   formatted
 }
 
-format_title <- function(id, value, type) {
-  prefix <- if_else(
-    type == "debtor", "<br>Received: ", "<br>Provided: "
-  )
-
-  debt <- format_debt(value)
-
-  title <- str_c(
-    id, prefix, debt, " USD"
+format_title <- function(id, value_from, value_to) {
+  title <- case_when(
+    value_from > 0 & value_to > 0 ~ str_c(
+      id, 
+      "<br>Received: ", format_debt(value_from), 
+      "<br>Provided: ", format_debt(value_to)
+    ),
+    value_from > 0 ~ str_c(
+      id, 
+      "<br>Received: ", format_debt(value_from)
+    ),
+    value_to > 0 ~ str_c(
+      id, 
+      "<br>Provided: ", format_debt(value_to)
+    ),
+    TRUE ~ NA_character_
   )
   title
 }
@@ -50,18 +60,22 @@ create_nodes <- function(external_debt_sub) {
   total_debt <- sum(external_debt_sub$value)
   
   nodes <- external_debt_sub |> 
-    group_by(id = from, type = "debtor", color = "Country") |> 
-    summarize(value = sum(value),
+    group_by(id = from, color = "Country") |> 
+    summarize(value_from = sum(value),
               .groups = "drop") |> 
     bind_rows(
       external_debt_sub |> 
-        group_by(id = to, type = "creditor", color = counterpart_type) |> 
-        summarize(value = sum(value),
+        group_by(id = to, color = counterpart_type) |> 
+        summarize(value_to = sum(value),
                   .groups = "drop")
     ) |> 
+    group_by(id, color) |> 
+    summarize(across(c(value_from, value_to), \(x) sum(x, na.rm = TRUE)),
+              .groups = "drop") |> 
     mutate(
-      title = format_title(id, value, type),
+      title = format_title(id, value_from, value_to),
       label = format_label(id),
+      value = coalesce(value_from, 0) + coalesce(value_to, 0),
       size = value / total_debt,
       color = case_when(
         color == "Other" ~ "#C46231",
