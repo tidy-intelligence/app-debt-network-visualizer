@@ -10,7 +10,7 @@ geographies <- ids_list_geographies() |>
 
 external_debt_raw <- geographies$geography_id |> 
   map_df(
-    \(x) ids_get(x, "DT.DOD.DPPG.CD", "all", 2019, 2022),
+    \(x) ids_get(x, "DT.DOD.DPPG.CD", "all", 2019, 2023),
     .progress = TRUE
   )
 

@@ -1,21 +1,23 @@
-# Grammar
-library(dplyr)
-library(dbplyr)
-library(tidyr)
-library(stringr)
-
-# Data fetching & storing
-library(wbids)
-library(duckdb)
-
-# Shiny
-library(shiny)
-library(shinydashboard)
-library(shinycssloaders)
-library(shinyjs)
-
-# Visualization
-library(visNetwork)
+box::use(
+  dplyr[
+    select, mutate, group_by, summarize, bind_rows, case_when, filter, 
+    arrange, pull, distinct, coalesce
+  ],
+  stringr[str_wrap, str_c],
+  DBI[dbConnect, dbGetQuery, dbDisconnect],
+  duckdb[duckdb],
+  shiny[
+    fluidPage, fluidRow, column, selectInput, selectizeInput, actionButton,
+    updateSelectizeInput, updateSelectInput, eventReactive, req, shinyApp
+  ],
+  shinydashboard[box],
+  shinycssloaders[withSpinner],
+  htmltools[tags, h1, p, a],
+  shinyjs[useShinyjs, delay, click],
+  visNetwork[
+    visNetwork, visNodes, visLayout, visNetworkOutput, renderVisNetwork
+  ]
+)
 
 # Helper functions
 source("R/helpers.R")
@@ -23,10 +25,7 @@ source("R/helpers.R")
 # Load data --------------------------------------------------------------
 
 con <- dbConnect(duckdb(), "data/debt-network-visualizer.duckdb")
-
-external_debt <- tbl(con, "external_debt") |> 
-  collect() 
-
+external_debt <- dbGetQuery(con, "SELECT * FROM external_debt")
 dbDisconnect(con)
 
 available_debtors <- distinct(external_debt, from) |> 
@@ -72,7 +71,7 @@ ui <- fluidPage(
         column(6,  selectInput("yearDebtors", "Pick a year", selected = NULL, choices = NULL))
       ),
       actionButton("debtorsButton", "Update debtor network"),
-      shinycssloaders::withSpinner(
+      withSpinner(
         visNetworkOutput("debtorsNetwork"),
         color = "black"
       )
@@ -89,7 +88,7 @@ ui <- fluidPage(
         column(6,  selectInput("yearCreditors", "Pick a year", selected = NULL, choices = NULL))
       ),
       actionButton("creditorsButton", "Update creditor network"),
-      shinycssloaders::withSpinner(
+      withSpinner(
         visNetworkOutput("creditorsNetwork"),
         color = "black"
       )
@@ -154,7 +153,6 @@ server <- function(input, output, session) {
     req(processed_data_creditors())
     visualize_network(processed_data_creditors())
   })
-  
   
   delay(1000, click("debtorsButton"))
   delay(1000, click("creditorsButton"))
