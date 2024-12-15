@@ -1,11 +1,4 @@
 box::use(
-  dplyr[
-    select, mutate, group_by, summarize, bind_rows, case_when, filter, 
-    arrange, pull, distinct, coalesce
-  ],
-  stringr[str_wrap, str_c],
-  DBI[dbConnect, dbGetQuery, dbDisconnect],
-  duckdb[duckdb],
   shiny[
     fluidPage, fluidRow, column, selectInput, selectizeInput, actionButton,
     updateSelectizeInput, updateSelectInput, eventReactive, req, shinyApp
@@ -15,28 +8,16 @@ box::use(
   htmltools[tags, h1, p, a],
   shinyjs[useShinyjs, delay, click],
   visNetwork[
-    visNetwork, visNodes, visLayout, visNetworkOutput, renderVisNetwork
+    visNetworkOutput, renderVisNetwork
   ]
 )
 
-# Helper functions
-source("R/helpers.R")
+box::use(
+  app/logic/load_data[load_processed_data, load_input_options],
+  app/logic/visualize_network[...]
+)
 
-# Load data --------------------------------------------------------------
-
-con <- dbConnect(duckdb(), "data/debt-network-visualizer.duckdb")
-external_debt <- dbGetQuery(con, "SELECT * FROM external_debt")
-dbDisconnect(con)
-
-available_debtors <- distinct(external_debt, from) |> 
-  arrange(from) |> 
-  pull()
-available_creditors <- distinct(external_debt, to) |> 
-  arrange(to) |> 
-  pull()
-available_years <- distinct(external_debt, year) |>
-  arrange(desc(year)) |> 
-  pull()
+# UI ---------------------------------------------------------------------
 
 ui <- fluidPage(
   
@@ -99,12 +80,14 @@ ui <- fluidPage(
 # Server ------------------------------------------------------------------
 
 server <- function(input, output, session) {
+
+  input_options <- load_input_options()
   
   updateSelectizeInput(
     session,
     "debtors",
     server = TRUE,
-    choices = available_debtors,
+    choices = input_options$available_debtors,
     selected = c("Nigeria", "Cameroon")
   )
 
@@ -112,28 +95,28 @@ server <- function(input, output, session) {
     session,
     "creditors",
     server = TRUE,
-    choices = available_creditors,
+    choices = input_options$available_creditors,
     selected = c("Austria", "Switzerland")
   )
   
   updateSelectInput(
     session,
     "yearDebtors",
-    choices = available_years,
-    selected = max(available_years)
+    choices = input_options$available_years,
+    selected = max(input_options$available_years)
   )
   
   updateSelectInput(
     session,
     "yearCreditors",
-    choices = available_years,
-    selected = max(available_years)
+    choices = input_options$available_years,
+    selected = max(input_options$available_years)
   )
   
   processed_data_debtors <- eventReactive(input$debtorsButton, {
-    req(input$debtors, input$yearDebtors)  # Ensure inputs are valid
+    req(input$debtors, input$yearDebtors)
     load_processed_data(
-      external_debt, debtors = input$debtors, selected_year = input$yearDebtors
+      debtors = input$debtors, selected_year = input$yearDebtors
     )
   })
 
@@ -145,7 +128,7 @@ server <- function(input, output, session) {
   processed_data_creditors <- eventReactive(input$creditorsButton, {
     req(input$creditors, input$yearCreditors)
     load_processed_data(
-      external_debt, creditors = input$creditors, selected_year = input$yearCreditors
+      creditors = input$creditors, selected_year = input$yearCreditors
     )
   })
 
