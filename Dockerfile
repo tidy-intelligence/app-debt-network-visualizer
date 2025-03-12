@@ -47,6 +47,9 @@ RUN mkdir -p /var/log/shiny-server && \
 RUN chown -R shiny:shiny /usr/local/lib/R/site-library/ && \
     chmod -R 755 /usr/local/lib/R/site-library/
 
+# Switch to non-root user
+USER shiny
+
 # Expose port for Shiny
 EXPOSE 8080
 
