@@ -35,15 +35,20 @@ RUN R -e 'remotes::install_local(upgrade="never")'
 RUN rm -rf /build_zone
 
 # Configure Shiny Server
-RUN mkdir -p /srv/shiny-server/app
+RUN mkdir -p /srv/shiny-server/app && \
+    chown -R shiny:shiny /srv/shiny-server
 COPY shiny-server.conf /etc/shiny-server/shiny-server.conf
 COPY app.R /srv/shiny-server/app/app.R
+COPY
 
-# Ensure correct permissions
-RUN chown -R shiny:shiny /srv/shiny-server
+# Ensure correct permissions to delete logs
 RUN mkdir -p /var/log/shiny-server && \
-    chown -R shiny:shiny /var/log/shiny-server && \
-    chmod -R 755 /var/log/shiny-server
+    chown -R /var/log/shiny-server && \
+    chmod -R 777 /var/log/shiny-server
+
+# Grant read access to all files in R package library for the shiny user
+RUN chown -R shiny:shiny /usr/local/lib/R/site-library/ && \
+    chmod -R 755 /usr/local/lib/R/site-library/
 
 # Expose port for Shiny
 EXPOSE 8080
