@@ -15,12 +15,12 @@ load_processed_data <- function(
 
   if (!is.null(debtors)) {
     processed_data <- external_debt |>
-      filter(from %in% debtors & year == selected_year) |>
+      filter(.data$from %in% debtors & .data$year == selected_year) |>
       collect()
   }
   if (!is.null(creditors)) {
     processed_data <- external_debt |>
-      filter(to %in% creditors & year == selected_year) |>
+      filter(.data$to %in% creditors & .data$year == selected_year) |>
       collect()
   }
   dbDisconnect(con)
@@ -39,16 +39,19 @@ load_input_options <- function() {
   con <- dbConnect(duckdb(), duckdb_path)
   external_debt <- tbl(con, "external_debt")
 
-  available_debtors <- distinct(external_debt, from) |>
-    arrange(from) |>
+  available_debtors <- external_debt |>
+    distinct(.data$from) |>
+    arrange(.data$from) |>
     pull()
 
-  available_creditors <- distinct(external_debt, to) |>
-    arrange(to) |>
+  available_creditors <- external_debt |>
+    distinct(.data$to) |>
+    arrange(.data$to) |>
     pull()
 
-  available_years <- distinct(external_debt, year) |>
-    arrange(desc(year)) |>
+  available_years <- external_debt |>
+    distinct(.data$year) |>
+    arrange(desc(.data$year)) |>
     pull()
 
   dbDisconnect(con)

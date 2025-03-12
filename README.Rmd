@@ -22,8 +22,8 @@ output: github_document
 
 You can install the development version of `{debtnetworkvisualizer}` like so:
 
-```{r}
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+```{r, eval = FALSE}
+pak::pak("tidy-intelligence/app-debt-network-visualizer")
 ```
 
 ## Run
@@ -52,8 +52,4 @@ devtools::check(quiet = TRUE)
 
 ```{r echo = FALSE}
 unloadNamespace("debtnetworkvisualizer")
-```
-
-```{r, error = TRUE}
-covr::package_coverage()
 ```

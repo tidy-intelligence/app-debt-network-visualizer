@@ -58,28 +58,28 @@ create_nodes <- function(external_debt_sub) {
   total_debt <- sum(external_debt_sub$value)
 
   nodes <- external_debt_sub |>
-    group_by(id = from, color = "Country") |>
-    summarize(value_from = sum(value), .groups = "drop") |>
+    group_by(id = .data$from, color = "Country") |>
+    summarize(value_from = sum(.data$value), .groups = "drop") |>
     bind_rows(
       external_debt_sub |>
-        group_by(id = to, color = counterpart_type) |>
-        summarize(value_to = sum(value), .groups = "drop")
+        group_by(id = .data$to, color = .data$counterpart_type) |>
+        summarize(value_to = sum(.data$value), .groups = "drop")
     ) |>
-    group_by(id, color) |>
+    group_by(.data$id, .data$color) |>
     summarize(
-      across(c(value_from, value_to), \(x) sum(x, na.rm = TRUE)),
+      across(c("value_from", "value_to"), \(x) sum(x, na.rm = TRUE)),
       .groups = "drop"
     ) |>
     mutate(
-      title = format_title(id, value_from, value_to),
-      label = format_label(id),
-      value = coalesce(value_from, 0) + coalesce(value_to, 0),
-      size = value / total_debt,
+      title = format_title(.data$id, .data$value_from, .data$value_to),
+      label = format_label(.data$id),
+      value = coalesce(.data$value_from, 0) + coalesce(.data$value_to, 0),
+      size = .data$value / total_debt,
       color = case_when(
-        color == "Other" ~ "#C46231",
-        color == "Country" ~ "#3193C4",
-        color == "Global MDBs" ~ "#AB31C4",
-        color == "Bondholders" ~ "#4AC431"
+        .data$color == "Other" ~ "#C46231",
+        .data$color == "Country" ~ "#3193C4",
+        .data$color == "Global MDBs" ~ "#AB31C4",
+        .data$color == "Bondholders" ~ "#4AC431"
       )
     )
   nodes
@@ -89,7 +89,7 @@ create_nodes <- function(external_debt_sub) {
 #' @noRd
 create_edges <- function(external_debt_sub) {
   edges <- external_debt_sub |>
-    select(from, to) |>
+    select("from", "to") |>
     mutate(
       shadow = TRUE,
       color = "grey",

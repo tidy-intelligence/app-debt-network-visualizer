@@ -1,6 +1,6 @@
 Package: debtnetworkvisualizer
 Title: Debt Network Visualizer
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person("Christoph", "Scheuch", , "christoph@tidy-intelligence.com", role = c("aut", "cre", "cph"))
 Description: Visual global debt networks based on World Bank International Debt Statistics (IDS).
