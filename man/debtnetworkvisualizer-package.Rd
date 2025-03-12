@@ -6,7 +6,7 @@
 \alias{debtnetworkvisualizer-package}
 \title{debtnetworkvisualizer: Debt Network Visualizer}
 \description{
-Visual global debt networks based on World Bank International Debt Statistics (IDS).
+Visualize global debt networks based on World Bank International Debt Statistics (IDS).
 }
 \seealso{
 Useful links:

@@ -3,8 +3,9 @@
 
 # `{debtnetworkvisualizer}`
 
-<!-- badges: start -->
-<!-- badges: end -->
+Visualize global debt networks based on World Bank International Debt
+Statistics (IDS). You can find a deployed version of the app at
+[app-debt-network-visualizer.tidy-intelligence.com](https://app-debt-network-visualizer.tidy-intelligence.com/)
 
 ## Installation
 
@@ -31,7 +32,7 @@ This README has been compiled on the
 
 ``` r
 Sys.time()
-#> [1] "2025-03-12 16:26:03 CET"
+#> [1] "2025-03-12 18:40:36 CET"
 ```
 
 Here are the tests results and package coverage:
@@ -40,7 +41,7 @@ Here are the tests results and package coverage:
 devtools::check(quiet = TRUE)
 #> ℹ Loading debtnetworkvisualizer
 #> ── R CMD check results ──────────────────────── debtnetworkvisualizer 0.1.0 ────
-#> Duration: 14.3s
+#> Duration: 12.4s
 #> 
 #> ❯ checking for future file timestamps ... NOTE
 #>   unable to verify current time

@@ -15,8 +15,7 @@ output: github_document
 
 # `{debtnetworkvisualizer}`
 
-<!-- badges: start -->
-<!-- badges: end -->
+Visualize global debt networks based on World Bank International Debt Statistics (IDS). You can find a deployed version of the app at [app-debt-network-visualizer.tidy-intelligence.com](https://app-debt-network-visualizer.tidy-intelligence.com/)
 
 ## Installation
 

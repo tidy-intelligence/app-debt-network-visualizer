@@ -3,7 +3,7 @@ Title: Debt Network Visualizer
 Version: 0.1.0
 Authors@R: 
     person("Christoph", "Scheuch", , "christoph@tidy-intelligence.com", role = c("aut", "cre", "cph"))
-Description: Visual global debt networks based on World Bank International Debt Statistics (IDS).
+Description: Visualize global debt networks based on World Bank International Debt Statistics (IDS).
 License: file LICENSE
 URL: https://github.com/tidy-intelligence/app-debt-network-visualizer
 BugReports: https://github.com/tidy-intelligence/app-debt-network-visualizer/issues
