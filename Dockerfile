@@ -1,5 +1,4 @@
-# r2u image automatically fetches R packages as Ubuntu binaries
-FROM rocker/r2u
+FROM rocker/shiny
 
 # Install required system dependencies
 RUN apt-get update && apt-get install -y \
@@ -7,12 +6,7 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     pkg-config \
-    gdebi-core \
-    wget \
-    && wget https://download3.rstudio.org/ubuntu-20.04/x86_64/shiny-server-1.5.23.1030-amd64.deb \
-    && gdebi -n shiny-server-1.5.23.1030-amd64.deb \
-    && rm shiny-server-1.5.23.1030-amd64.deb \
-    && apt-get clean \
+    xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
 # Ensure R can access the correct package repository
