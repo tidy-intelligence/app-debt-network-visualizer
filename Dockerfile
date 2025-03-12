@@ -6,8 +6,10 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     pkg-config \
+    gdebi-core \
+    wget \
     && wget https://download3.rstudio.org/ubuntu-20.04/x86_64/shiny-server-1.5.23.1030-amd64.deb \
-    && gdebi shiny-server-1.5.23.1030-amd64.deb \
+    && gdebi -n shiny-server-1.5.23.1030-amd64.deb \
     && rm shiny-server-1.5.23.1030-amd64.deb \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
