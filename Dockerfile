@@ -39,7 +39,6 @@ RUN mkdir -p /srv/shiny-server/app && \
     chown -R shiny:shiny /srv/shiny-server
 COPY shiny-server.conf /etc/shiny-server/shiny-server.conf
 COPY app.R /srv/shiny-server/app/app.R
-COPY
 
 # Ensure correct permissions to delete logs
 RUN mkdir -p /var/log/shiny-server && \
