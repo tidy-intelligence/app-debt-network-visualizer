@@ -1,4 +1,4 @@
-FROM rocker/shiny
+FROM rocker/r2u
 
 # Install required system dependencies
 RUN apt-get update && apt-get install -y \
@@ -6,11 +6,14 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     pkg-config \
+    && wget https://download3.rstudio.org/ubuntu-20.04/x86_64/shiny-server-1.5.23.1030-amd64.deb \
+    && gdebi shiny-server-1.5.23.1030-amd64.deb \
+    && rm shiny-server-1.5.23.1030-amd64.deb \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Ensure R can access the correct package repository
 RUN mkdir -p /usr/local/lib/R/etc/ /usr/lib/R/etc/
-RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl', Ncpus = 4)" | tee /usr/local/lib/R/etc/Rprofile.site | tee /usr/lib/R/etc/Rprofile.site
 
 # Install baseline R packages for golem
 RUN R -e "install.packages(c('remotes', 'shiny', 'bslib', 'config', 'testthat', 'spelling', 'golem'))"
