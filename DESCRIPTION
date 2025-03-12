@@ -1,0 +1,24 @@
+Package: debtnetworkvisualizer
+Title: Debt Network Visualizer
+Version: 0.0.0.9000
+Authors@R: 
+    person("Christoph", "Scheuch", , "christoph@tidy-intelligence.com", role = c("aut", "cre", "cph"))
+Description: Visual global debt networks based on World Bank International Debt Statistics (IDS).
+License: file LICENSE
+URL: https://github.com/tidy-intelligence/app-debt-network-visualizer
+BugReports: https://github.com/tidy-intelligence/app-debt-network-visualizer/issues
+Imports: 
+    config,
+    golem,
+    shiny,
+    bslib,
+    shinycssloaders,
+    visNetwork,
+    shinyjs,
+    stringr,
+    duckdb,
+    DBI,
+    dplyr
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
