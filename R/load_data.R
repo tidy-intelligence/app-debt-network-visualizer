@@ -5,25 +5,20 @@ load_processed_data <- function(
   creditors = NULL,
   selected_year = 2022
 ) {
-  duckdb_path <- system.file(
-    "debt-network-visualizer.duckdb",
+  external_debt <- system.file(
+    "external_debt.parquet",
     package = "debtnetworkvisualizer"
-  )
-
-  con <- dbConnect(duckdb(), duckdb_path)
-  external_debt <- tbl(con, "external_debt")
+  ) |>
+    read_parquet()
 
   if (!is.null(debtors)) {
     processed_data <- external_debt |>
-      filter(.data$from %in% debtors & .data$year == selected_year) |>
-      collect()
+      filter(.data$from %in% debtors & .data$year == selected_year)
   }
   if (!is.null(creditors)) {
     processed_data <- external_debt |>
-      filter(.data$to %in% creditors & .data$year == selected_year) |>
-      collect()
+      filter(.data$to %in% creditors & .data$year == selected_year)
   }
-  dbDisconnect(con)
 
   processed_data
 }
@@ -31,30 +26,26 @@ load_processed_data <- function(
 #' @keywords internal
 #' @noRd
 load_input_options <- function() {
-  duckdb_path <- system.file(
-    "debt-network-visualizer.duckdb",
+  available_debtors <- system.file(
+    "available_debtors.parquet",
     package = "debtnetworkvisualizer"
-  )
-
-  con <- dbConnect(duckdb(), duckdb_path)
-  external_debt <- tbl(con, "external_debt")
-
-  available_debtors <- external_debt |>
-    distinct(.data$from) |>
-    arrange(.data$from) |>
+  ) |>
+    read_parquet() |>
     pull()
 
-  available_creditors <- external_debt |>
-    distinct(.data$to) |>
-    arrange(.data$to) |>
+  available_creditors <- system.file(
+    "available_creditors.parquet",
+    package = "debtnetworkvisualizer"
+  ) |>
+    read_parquet() |>
     pull()
 
-  available_years <- external_debt |>
-    distinct(.data$year) |>
-    arrange(desc(.data$year)) |>
+  available_years <- system.file(
+    "available_years.parquet",
+    package = "debtnetworkvisualizer"
+  ) |>
+    read_parquet() |>
     pull()
-
-  dbDisconnect(con)
 
   list(
     "available_debtors" = available_debtors,

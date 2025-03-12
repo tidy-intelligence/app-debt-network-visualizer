@@ -16,7 +16,7 @@ RUN mkdir -p /usr/local/lib/R/etc/ /usr/lib/R/etc/
 RUN R -e "install.packages(c('remotes', 'shiny', 'bslib', 'config', 'testthat', 'spelling', 'golem'))"
 
 # Install additional R packages for app
-RUN R -e "install.packages(c('shinycssloaders', 'visNetwork', 'shinyjs', 'stringr', 'duckdb', 'DBI', 'dplyr'))"
+RUN R -e "install.packages(c('shinycssloaders', 'visNetwork', 'shinyjs', 'stringr', 'nanoparquet', 'DBI', 'dplyr'))"
 
 # Create a build directory
 RUN mkdir /build_zone

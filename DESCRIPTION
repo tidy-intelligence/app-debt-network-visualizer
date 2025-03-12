@@ -16,7 +16,7 @@ Imports:
     visNetwork,
     shinyjs,
     stringr,
-    duckdb,
+    nanoparquet,
     DBI,
     dplyr
 Encoding: UTF-8

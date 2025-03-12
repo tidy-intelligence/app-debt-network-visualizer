@@ -3,7 +3,7 @@
 #' @import golem
 #' @import bslib
 #' @import dplyr
-#' @import duckdb
+#' @import nanoparquet
 #' @import DBI
 "_PACKAGE"
 
