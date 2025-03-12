@@ -1,3 +1,4 @@
+# r2u image automatically fetches R packages as Ubuntu binaries
 FROM rocker/r2u
 
 # Install required system dependencies
@@ -34,6 +35,9 @@ RUN R -e 'remotes::install_local(upgrade="never")'
 # Cleanup build files
 RUN rm -rf /build_zone
 
+# Cleanup build depedencies
+RUN apt-get remove -y gdebi-core && apt-get autoremove -y
+
 # Configure Shiny Server
 RUN mkdir -p /srv/shiny-server/app && \
     chown -R shiny:shiny /srv/shiny-server
@@ -42,7 +46,7 @@ COPY app.R /srv/shiny-server/app/app.R
 
 # Ensure correct permissions to delete logs
 RUN mkdir -p /var/log/shiny-server && \
-    chown -R /var/log/shiny-server && \
+    chown -R shiny:shiny /var/log/shiny-server && \
     chmod -R 777 /var/log/shiny-server
 
 # Grant read access to all files in R package library for the shiny user
