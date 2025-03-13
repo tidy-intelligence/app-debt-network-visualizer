@@ -32,7 +32,7 @@ This README has been compiled on the
 
 ``` r
 Sys.time()
-#> [1] "2025-03-12 18:40:36 CET"
+#> [1] "2025-03-13 06:59:21 CET"
 ```
 
 Here are the tests results and package coverage:
@@ -41,7 +41,7 @@ Here are the tests results and package coverage:
 devtools::check(quiet = TRUE)
 #> ℹ Loading debtnetworkvisualizer
 #> ── R CMD check results ──────────────────────── debtnetworkvisualizer 0.1.0 ────
-#> Duration: 12.4s
+#> Duration: 10.9s
 #> 
 #> ❯ checking for future file timestamps ... NOTE
 #>   unable to verify current time

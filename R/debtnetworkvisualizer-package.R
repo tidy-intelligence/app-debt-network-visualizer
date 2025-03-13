@@ -4,7 +4,6 @@
 #' @import bslib
 #' @import dplyr
 #' @import nanoparquet
-#' @import DBI
 "_PACKAGE"
 
 ## usethis namespace: start

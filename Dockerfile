@@ -6,7 +6,6 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     pkg-config \
-    xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
 # Ensure R can access the correct package repository
@@ -16,7 +15,7 @@ RUN mkdir -p /usr/local/lib/R/etc/ /usr/lib/R/etc/
 RUN R -e "install.packages(c('remotes', 'shiny', 'bslib', 'config', 'testthat', 'spelling', 'golem'))"
 
 # Install additional R packages for app
-RUN R -e "install.packages(c('shinycssloaders', 'visNetwork', 'shinyjs', 'stringr', 'nanoparquet', 'DBI', 'dplyr'))"
+RUN R -e "install.packages(c('shinycssloaders', 'visNetwork', 'shinyjs', 'stringr', 'nanoparquet', 'dplyr'))"
 
 # Create a build directory
 RUN mkdir /build_zone
@@ -28,9 +27,6 @@ RUN R -e 'remotes::install_local(upgrade="never")'
 
 # Cleanup build files
 RUN rm -rf /build_zone
-
-# Cleanup build depedencies
-RUN apt-get remove -y gdebi-core && apt-get autoremove -y
 
 # Configure Shiny Server
 RUN mkdir -p /srv/shiny-server/app && \

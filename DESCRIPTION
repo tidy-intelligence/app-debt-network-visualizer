@@ -17,7 +17,6 @@ Imports:
     shinyjs,
     stringr,
     nanoparquet,
-    DBI,
     dplyr
 Encoding: UTF-8
 LazyData: true
