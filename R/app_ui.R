@@ -7,17 +7,19 @@
 app_ui <- function(request) {
   tagList(
     golem_add_external_resources(),
-    bslib::page_navbar(
+    bslib::page_fluid(
       title = "Debt Network Visualizer",
-      nav_panel(
-        title = "Debtor-Centric View",
-        value = "debtors",
-        mod_debtors_ui("debtors_1")
-      ),
-      nav_panel(
-        title = "Creditor-Centric View",
-        value = "creditors",
-        mod_creditors_ui("creditors_1")
+      navset_pill(
+        nav_panel(
+          title = "Debtor-Centric View",
+          value = "debtors",
+          mod_debtors_ui("debtors_1")
+        ),
+        nav_panel(
+          title = "Creditor-Centric View",
+          value = "creditors",
+          mod_creditors_ui("creditors_1")
+        )
       )
     )
   )
