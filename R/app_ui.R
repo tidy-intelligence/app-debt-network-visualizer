@@ -9,6 +9,10 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     bslib::page_fluid(
       title = "Debt Network Visualizer",
+      theme = bs_theme(
+        primary = "#333333",
+        base_font = font_google("Open Sans")
+      ),
       navset_pill(
         nav_panel(
           title = "Debtor-Centric View",

@@ -76,10 +76,10 @@ create_nodes <- function(external_debt_sub) {
       value = coalesce(.data$value_from, 0) + coalesce(.data$value_to, 0),
       size = .data$value / total_debt,
       color = case_when(
-        .data$color == "Other" ~ "#C46231",
-        .data$color == "Country" ~ "#3193C4",
-        .data$color == "Global MDBs" ~ "#AB31C4",
-        .data$color == "Bondholders" ~ "#4AC431"
+        .data$color == "Other" ~ "#FBC9B7",
+        .data$color == "Country" ~ "#333333",
+        .data$color == "Global MDBs" ~ "#C9B7FB",
+        .data$color == "Bondholders" ~ "#B7FBC9"
       )
     )
   nodes

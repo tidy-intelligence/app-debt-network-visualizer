@@ -29,12 +29,12 @@ mod_debtors_ui <- function(id) {
           ),
           actionButton(
             ns("debtorsButton"),
-            "Update network",
-            class = "btn-primary"
+            "Update network"
           )
         ),
         withSpinner(
-          visNetworkOutput(ns("debtorsNetwork"))
+          visNetworkOutput(ns("debtorsNetwork")),
+          color = "black"
         )
       )
     ),
