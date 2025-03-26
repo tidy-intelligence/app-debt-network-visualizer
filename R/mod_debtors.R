@@ -55,7 +55,7 @@ mod_debtors_server <- function(id, input_options) {
       "debtors",
       server = TRUE,
       choices = input_options$available_debtors,
-      selected = c("Nigeria", "Cameroon")
+      selected = c("Mexico", "Guatemala")
     )
 
     updateSelectInput(

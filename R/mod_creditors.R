@@ -55,7 +55,7 @@ mod_creditors_server <- function(id, input_options) {
       "creditors",
       server = TRUE,
       choices = input_options$available_creditors,
-      selected = c("Austria", "Switzerland")
+      selected = c("United States", "China")
     )
 
     updateSelectInput(

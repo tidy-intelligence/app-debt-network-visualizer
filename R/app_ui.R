@@ -7,7 +7,8 @@
 app_ui <- function(request) {
   tagList(
     golem_add_external_resources(),
-    bslib::page_fluid(
+    bslib::page_fixed(
+      style = "max-width: 1000px; margin: 0 auto; padding: 8px;",
       title = "Debt Network Visualizer",
       theme = bs_theme(
         primary = "#333333",
